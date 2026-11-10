@@ -1,0 +1,19 @@
+# One-click deploy on Render (render.com → New → Blueprint → pick this repo).
+services:
+  - type: web
+    name: holofold
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      # Keeps players signed in across restarts and redeploys.
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optional. Turns on photo scanning and fold checks; anyone with the link can use it, so set a spend limit first.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Optional. Turns on "Sign in with Google" (add the Render URL to the OAuth client's authorized origins).
+      - key: GOOGLE_CLIENT_ID
+        sync: false
